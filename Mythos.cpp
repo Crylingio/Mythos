@@ -1,5 +1,6 @@
-#include "stdafx.h"
+//#include "stdafx.h"
 #include "windows.h"
+#include <conio.h>
 #include <iostream>
 #include <string>
 #include <vector>
@@ -18,13 +19,23 @@ struct Cha {
 	string name = "None";
 	string clas = "None";
 	string race = "None";
+	string prof = "None";
+	string difficultyn = "Normal";
+	double difficulty = 1;
 	int str = 1;
 	int def = 1;
 	int wis = 1;
 	int agl = 1;
 	int crt = 1;
+	int crtx = 2;
+	int alloc = 3;
+	int week = 1;
+	int day = 1;
+	double melx = 1;
+    double splx = 1;
 	int co;
 	int ca;
+	bool guildtutorial = false;
 } Cha;
 
 void wait_enter(void) //Method of wait_enter, call it to create a Press Enter to continue screen.
@@ -32,6 +43,11 @@ void wait_enter(void) //Method of wait_enter, call it to create a Press Enter to
 	cin.ignore();
 	cout << "Press ENTER to continue...";
 	cin.ignore();
+}
+
+int waitForKey()
+{
+    return getch() - 48;
 }
 
 void swapColor()
@@ -56,13 +72,76 @@ void shop() {
 void inven() {
 
 }
+void guild() {
+    system("cls");
+    cout << "-*- Guild -*-" << endl;
+    if(Cha.guildtutorial == false) {
+        cout << "The guild is where you can donate gold for special rewards, eg: Ranks, Items, and more.\nAs you fight in the land of Sarin, the guild will gain a little bit of gold, and you can withdraw whenever.\n\nYou have gained the rank, " << endl;
+        wait_enter();
+        Cha.guildtutorial = true;
+        guild();
+    }
+    swapColor();
+    cout << "1";
+    swapColor();
+    cout << ") Deposit Gold" << endl;
+    swapColor();
+    cout << "2";
+    swapColor();
+    cout << ") Withdrawal Gold" << endl;
+    swapColor();
+    cout << "3";
+    swapColor();
+    cout << ") Rankup"
+}
 
 
 
 void town() {
 	int townput;
+	bool townhole = false;
+	while(townhole == false) {
+    if(Cha.day == 7) {
+        Cha.week += 1;
+        Cha.day = 1;
+    }
 	system("cls");
-	cout << "1) Board\n2) Inn\n3) Shop\n4) Inventory" << endl;
+	cout << "-*- Town of Elc, Sarin || Week " << Cha.week << " Day " << Cha.day << " -*-" << endl;
+	swapColor();
+	cout << "\n1";
+	swapColor();
+	cout << ") Board" << endl;
+	swapColor();
+	cout << "2";
+	swapColor();
+	cout << ") Inn" << endl;
+	swapColor();
+	cout << "3";
+	swapColor();
+	cout << ") Shop" << endl;
+	swapColor();
+	cout << "4";
+	swapColor();
+	cout << ") Guild" << endl;
+	swapColor();
+	cout << "5";
+	swapColor();
+	cout << ") Inventory & Stats" << endl;
+	swapColor();
+	cout << "6";
+	swapColor();
+	cout << ") Save\n\nName: ";
+	swapColor();
+	cout << Cha.name;
+	swapColor();
+	cout << "\n\nHealth: ";
+	swapColor();
+	cout << Cha.hp;
+	swapColor();
+	cout << "\nSoul: ";
+	swapColor();
+	cout << Cha.sp;
+	swapColor();
 	cin >> townput;
 	switch (townput) {
 	case 1:
@@ -75,18 +154,22 @@ void town() {
 		shop();
 	break;
 	case 4:
+        guild();
+    break;
+	case 5:
 		inven();
 	break;
 
-
+	}
 	}
 }
 
 void characcr() {
 	int colorc;
+	int colorce;
 	system("cls");
 	cout << "-*- Console Color -*- \n\nWhat color do you want your console?\n\n1) White\n\n2) Yellow\n\n3) Green\n\n4) Red" << endl;
-	cin >> colorc;
+	colorc = waitForKey();
 	switch (colorc) {
 	case 1:
 		Cha.co = 15;
@@ -104,7 +187,7 @@ void characcr() {
 	SetConsoleTextAttribute(hConsole, Cha.co);
 	system("cls");
 	cout << "-*- Accent Color -*-\n\nWhat is your choice/marker color?\n\n1) White\n\n2) Red\n\n3) Magenta\n\n4) Cyan\n\n5) Same as Console Color" << endl;
-	cin >> colorc;
+	colorc = waitForKey();
 	switch (colorc) {
 	case 1:
 		Cha.ca = 15;
@@ -129,43 +212,57 @@ void characcr() {
 	swapColor();
 	cout << ") Choice 1\nName: ";
 	swapColor();
-	cout << "Name";
+	cout << "Your Name Here!";
 	swapColor();
 	cout << "\n\nIs this ok?\n1) Yes\n2) No" << endl;
-	cin >> colorc;
-	switch (colorc) {
+	colorce = waitForKey();
+	switch (colorce) {
+    case 1:
+        break;
 	case 2:
 		characcr();
 		break;
 	}
-	cin.ignore();
 	int randin;
-	system("cls");
+    string oldname;
+	bool randcheck = false;
+	string fhname[10] = {"Crow", "Haruki", "Goblin", "Jerry", "Coagula", "Jaroslav", "Jason", "Garfield", "Willace", "Sage"};
+	string lhname[10] = {" Harakiri", " Kubo", " The King Gizzard and the Lizard Wizard", " Seinfeld", " Fortunas", " Elc", " Flips", " Crust", " Gamer", " Jorhanavere"};
 	string fname[10] = { "Dzal", "R'vor", "Taz", "Mi't", "Nhiz", "F'rot", "Zar", "Krzaf", "Son", "Laztor" };
 	string lname[10] = { "enor", "amok", "ionas", "uov", "ek", "ort", "anaz", "yuz", "opat", "easea" };
-	cout << "-*- Name -*-\n\nWhat's your name? (Type '1' for Random)" << endl;
+    while (randcheck == false) {
+    oldname = Cha.name;
+    system("cls");
+	cout << "-*- Name -*-\n\nWhat's your name?\nType anything for a custom name\n\n";
+	swapColor();
+	cout << "1";
+	swapColor();
+	cout << ") Finish\n\n";
+	swapColor();
+	cout << "2";
+	swapColor();
+	cout << ") Random Real Name\n";
+	swapColor();
+	cout << "3";
+	swapColor();
+	cout << ") Random Eldritch Name\n\nCurrent Name: ";
+	swapColor();
+	cout << Cha.name << endl;
+	swapColor();
 	getline(cin, Cha.name);
-	if (Cha.name == "1") {
-		bool randcheck = false;
-		while (randcheck == false) {
+	if(Cha.name == "1") {
+        randcheck = true;
+	}
+	if (Cha.name == "2") {
+			system("cls");
+			Cha.name = fhname[rng() % 10] + lhname[rng() % 10];
+	}
+	if (Cha.name == "3") {
 			system("cls");
 			Cha.name = fname[rng() % 10] + lname[rng() % 10];
-			cout << "Is '";
-			swapColor();
-			cout << Cha.name;
-			swapColor();
-			cout << "' Ok?\n1) Yes\n2) No" << endl;
-			cin >> randin;
-			switch (randin) {
-			case 1:
-				randcheck = true;
-				break;
-			case 2:
-
-				break;
-			}
-		}
 	}
+	}
+	Cha.name = oldname;
 	bool charunfin = false;
 	int creatput;
 	while (charunfin == false) {
@@ -180,7 +277,11 @@ void characcr() {
 		swapColor();
 		cout << "Race: ";
 		swapColor();
-		cout << Cha.race << "\n\n1";;
+		cout << Cha.race << endl;
+        swapColor();
+		cout << "Proficiency: ";
+		swapColor();
+		cout << Cha.prof << "\n\n1";
 		swapColor();
 		cout << ") Class" << endl;
 		swapColor();
@@ -204,10 +305,70 @@ void characcr() {
 		swapColor();
 		cout << "Wisdom: ";
 		swapColor();
-		cout << Cha.wis << endl;
+		cout << Cha.wis << "\n\n4";
 		swapColor();
-		cin >> creatput;
+		cout << ") Finish Creation" << endl;
+		creatput = waitForKey();
 		switch (creatput) {
+        case 4:
+        if(Cha.race == "None" || Cha.clas == "None" || Cha.prof == "None") {
+            system("cls");
+            cout << "Please finish your character!\n" << endl;
+            wait_enter();
+        } else {
+            charunfin = true;
+            system("cls");
+            cout << "-*- Difficulty Selection -*-\n" << endl;
+            swapColor();
+            cout << "1";
+            swapColor();
+            cout << ") Easy - Difficulty Multiplier: .75x" << endl;
+            swapColor();
+            cout << "2";
+            swapColor();
+            cout << ") Normal - Difficulty Multiplier: 1x" << endl;
+            swapColor();
+            cout << "3";
+            swapColor();
+            cout << ") Hard - Difficulty Multiplier: 1.5x" << endl;
+            creatput = waitForKey();
+            switch(creatput) {
+            case 1:
+                Cha.difficulty = .75;
+                Cha.difficultyn = "Easy";
+            break;
+            case 2:
+                Cha.difficulty = 1;
+                Cha.difficultyn = "Normal";
+            break;
+            case 3:
+                Cha.difficulty = 1.5;
+                Cha.difficultyn = "Hard";
+            break;
+            }
+            system("cls");
+            cout << "-*- Main Story -*-" << endl;
+            cout << "\n     Eldritch monsters have invaded the world of Azoth. As a young " << Cha.race << " living in Elc, you decide to fight \nthese beings and save the world. Starting small, you only have your fists and a few potions to help you in fights.\n\n     Elc is a small trading town located in Sarin. There's a board with listings of bandits, monsters, and eldritch \nhorrors, each increasing in pay. As a";
+            if(Cha.clas == "Warrior") {
+                cout << " Warrior, you've learned the ways of fighting only with swords and fists. \nYou've practiced spells, but none are powerful enough to deal noticeable damage to an enemy.\nYou take advantage of speed and high damage, your attacks are relentless." << endl;
+            } else if(Cha.clas == "Wizard") {
+                cout << " Wizard, you've spent your entire life studying magic, never leaving the\nstudy. Your spells are potent, capable of healing and destroying. You take advantage of an enemy's weak defenses." << endl;
+            } else if(Cha.clas == "Rogue") {
+                cout << " Rogue, you've lived your life in the shadows. Assassinating high officials\nand robbing unsuspecting victims. Your moves are fast and calculated. You take advantage of high damaging \ncritical hits and speed." << endl;
+            }
+            if(Cha.difficultyn == "Easy") {
+                cout << "\n     You've learned from a protective childhood that fighting just aint in your nature. The Azoth gods look down upon \nyou in pity and bless you with fortune and good luck." << endl;
+            } else if(Cha.difficultyn == "Normal") {
+                cout << "\n     You've spent your life wandering in the forest, hunting for food. Your knowledge of the outdoors helps you explore \nSorin well, and your decent understanding of hunting and fighting prove you well in combat." << endl;
+            } else if(Cha.difficultyn == "Hard") {
+                cout << "\n     You've killed so many things in your lifetime that even the gods are worried. They see your potential for \ndestruction and try everything to stop you from destroying the world in your death-quest. You are cursed with bad luck and misery." << endl;
+            }
+            cout << "\n     You wake up outside, pine trees towering over you. The sky is covered in clouds. As you sit up you see \nthe town of Elc next to you. You get up and walk over, your bag hung over your back." << endl;
+            cout << "\nPress ENTER to continue..." << endl;
+            cin.ignore();
+            town();
+        }
+        break;
 		case 1:
 			system("cls");
 			cout << "-*- Class Selection Screen -*-\n" << endl;
@@ -223,7 +384,7 @@ void characcr() {
 			cout << "\n3";
 			swapColor();
 			cout << ") Rogue:\n     Rogues pay more attention to where strikes land, giving them more\n     critical hits. They can cast spells to boose their agility and strength" << endl;
-			cin >> creatput;
+			creatput = waitForKey();
 			switch (creatput) {
 			case 1:
 				Cha.clas = "Warrior";
@@ -237,6 +398,11 @@ void characcr() {
 			}
 			break;
 		case 2:
+            Cha.str = 1;
+            Cha.def = 1;
+            Cha.wis = 1;
+            Cha.crt = 1;
+            Cha.agl = 1;
 			system("cls");
 			cout << "-*- Race Selection -*-" << endl;
 			swapColor();
@@ -263,41 +429,74 @@ void characcr() {
 			cout << "\n6";
 			swapColor();
 			cout << ") Arachnid - +3 AGL, +3% CRT-CHANCE" << endl;
-			cin >> creatput;
+			creatput = waitForKey();
 			switch (creatput) {
 			case 1:
 				Cha.race = "Human";
-				Cha.str = 4;
-				Cha.def = 3;
+				Cha.str += 3;
+				Cha.def += 2;
 			break;
 			case 2:
 				Cha.race = "Skelekin";
-				Cha.def = 6;
-				Cha.wis = 0;
+				Cha.def += 5;
+				Cha.wis -= 1;
 			break;
 			case 3:
 				Cha.race = "Kobold";
-				Cha.agl = 5;
-				Cha.str = 2;
-				Cha.wis = 0;
+				Cha.agl += 4;
+				Cha.str += 1;
+				Cha.wis -= 1;
 			break;
 			case 4:
 				Cha.race = "Spaceslug";
-				Cha.wis = 6;
-				Cha.def = 3;
+				Cha.wis += 5;
+				Cha.def += 2;
 			break;
 			case 5:
 				Cha.race = "Kenku";
-				Cha.agl = 3;
-				Cha.wis = 3;
-				Cha.str = 3;
+				Cha.agl += 2;
+				Cha.wis += 2;
+				Cha.str += 2;
 			break;
 			case 6:
 				Cha.race = "Arachnid";
-				Cha.agl = 4;
-				Cha.crt = 4;
+				Cha.agl += 3;
+				Cha.crt += 3;
 			break;
 			}
+			break;
+			case 3:
+                system("cls");
+                cout << "-*- Proficiency -*-\n\n";
+                swapColor();
+                cout << "1";
+                swapColor();
+                cout << ") Melee Proficiency\n     - Gives all melee hits more damage\n" << endl;
+                swapColor();
+                cout << "2";
+                swapColor();
+                cout << ") Soul Proficiency\n     - All spells are more potent\n" << endl;
+                swapColor();
+                cout << "3";
+                swapColor();
+                cout << ") Critical Proficiency\n      - Crits deal 3x Damage instead of 2x\n" << endl;
+                creatput = waitForKey();
+                switch(creatput) {
+                case 1:
+                Cha.prof = "Melee Proficiency";
+                Cha.melx = 1.25;
+                break;
+                case 2:
+                Cha.prof = "Soul Proficiency";
+                Cha.splx = 1.25;
+                break;
+                case 3:
+                Cha.prof = "Critical Proficiency";
+                Cha.crtx = 3;
+                break;
+                }
+
+            break;
 		}
 	}
 }
@@ -308,4 +507,3 @@ int main()
 	characcr();
     return 0;
 }
-
